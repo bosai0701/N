@@ -135,7 +135,7 @@
     const HH = String(now.getHours()).padStart(2,'0');
     const mm = String(now.getMinutes()).padStart(2,'0');
     const SS = String(now.getSeconds()).padStart(2,'0');
-    return `https://weather-kyoshin.west.edge.storage-yahoo.jp/RealTimeData/20251125/20251125180150.json`;
+    return `https://weather-kyoshin.west.edge.storage-yahoo.jp/RealTimeData/${YYYY}${MM}${DD}/${YYYY}${MM}${DD}${HH}${mm}${SS}.json`;
   }
 
   // ---------------------------
