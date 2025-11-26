@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>強震モニタ 高速P/S波 + 震源×</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
+  <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
+
+  <style>
+    #map { height: 100vh; width:100%; }
+
+    .info {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      padding: 6px 8px;
+      background: rgba(255,255,255,0.8);
+      box-shadow: 0 0 15px rgba(0,0,0,0.2);
+      border-radius: 5px;
+      font-size: 14px;
+    }
+
+    .epicenter-marker {
+      position: relative;
+      width: 20px;
+      height: 20px;
+    }
+
+    .epicenter-marker::before,
+    .epicenter-marker::after {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 2px;
+      height: 20px;
+      background: red;
+    }
+
+    .epicenter-marker::before { transform: translate(-50%, -50%) rotate(45deg); }
+    .epicenter-marker::after  { transform: translate(-50%, -50%) rotate(-45deg); }
+  </style>
+</head>
+<body>
+
+<div id="map"></div>
+<div class="info"><b>観測点数:</b> 0</div>
+
+<script>
+  // ---------------------------
+  // MapLibre 初期化
+  // ---------------------------
+  const map = new maplibregl.Map({
+    container: 'map',
+    style: {
+      version: 8,
+      sources: {
+        google: {
+          type: "raster",
+          tiles: ["https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"],
+          tileSize: 256
+        }
+      },
+      layers: [
+        { id: "google", type: "raster", source: "google" }
+      ]
+    },
+    center: [134.5, 34.5],
+    zoom: 3,
+    maxZoom: 9,
+    minZoom: 3,
+    attributionControl: false
+  });
+
+  // ---------------------------
+  // 観測点マーカー用変数
+  // ---------------------------
+  const infoBox = document.querySelector(".info");
+  const colorMap = {
+    d:'#0000CD', e:'#0024E3', f:'#000ED6', g:'#0048FA',
+    h:'#008CC2', i:'#00D08B', j:'#1FE460', k:'#7DFC21',
+    l:'#BDFF0C', m:'#DEFF05', n:'#FFFF00', o:'#FFEE00',
+    p:'#FFDD00', q:'#FFB600', r:'#FF9000', s:'#FF6A00',
+    t:'#FF4400', u:'#FA2100', v:'#F50000', w:'#D00000',
+    x:'#AA0000'
+  };
+  let geojson = { type:"FeatureCollection", features:[] };
+  let siteCoords = [], markersCount = 0;
+
+  // ---------------------------
+  // Mapロード後レイヤ追加
+  // ---------------------------
+  map.on("load", () => {
+    // 観測点レイヤ
+    map.addSource("points", { type:"geojson", data:geojson });
+    map.addLayer({
+      id:"points-layer",
+      type:"circle",
+      source:"points",
+      paint: {
+        "circle-radius": 2,
+        "circle-color": ["get","color"],
+        "circle-stroke-color": "#ffffff",
+        "circle-stroke-width": 0.2,
+        "circle-opacity": 1
+      }
+    });
+
+    // P/S波レイヤ
+    map.addSource("pWaveSource", { type:"geojson", data:{ type:"FeatureCollection", features:[] } });
+    map.addSource("sWaveSource", { type:"geojson", data:{ type:"FeatureCollection", features:[] } });
+    map.addLayer({ id:"pWaveLayer", type:"line", source:"pWaveSource", paint:{ "line-color":"blue", "line-width":1 } });
+    map.addLayer({ id:"sWaveLayer", type:"line", source:"sWaveSource", paint:{ "line-color":"red", "line-width":1 } });
+  });
+
+  // ---------------------------
+  // サイトリスト取得
+  // ---------------------------
+  fetch('https://weather-kyoshin.west.edge.storage-yahoo.jp/SiteList/sitelist.json')
+    .then(r => r.json())
+    .then(data => { siteCoords = data.items; updateMarkers(); });
+
+  // ---------------------------
+  // リアルタイムURL生成
+  // ---------------------------
+  function getRealTimeUrl(secondsAgo=5){
+    let now = new Date();
+    now.setSeconds(now.getSeconds() - secondsAgo);
+    const YYYY = now.getFullYear();
+    const MM = String(now.getMonth()+1).padStart(2,'0');
+    const DD = String(now.getDate()).padStart(2,'0');
+    const HH = String(now.getHours()).padStart(2,'0');
+    const mm = String(now.getMinutes()).padStart(2,'0');
+    const SS = String(now.getSeconds()).padStart(2,'0');
+    return `https://weather-kyoshin.west.edge.storage-yahoo.jp/RealTimeData/20251125/20251125180150.json`;
+  }
+
+  // ---------------------------
+  // 観測点更新
+  // ---------------------------
+  let loading=false;
+  function updateMarkers(){
+    if(loading || siteCoords.length===0) return;
+    loading=true;
+
+    fetch(getRealTimeUrl())
+      .then(r => { if(!r.ok) throw new Error("データなし"); return r.json(); })
+      .then(data => {
+        const intensities = data.realTimeData.intensity;
+        const N = Math.min(intensities.length, siteCoords.length);
+        geojson.features = []; markersCount = 0;
+
+        for(let i=0; i<N; i++){
+          let code = intensities.charAt(i);
+          if(code === 'c') continue;
+          markersCount++;
+          geojson.features.push({
+            type:"Feature",
+            geometry:{ type:"Point", coordinates:[siteCoords[i][1], siteCoords[i][0]] },
+            properties:{ color: colorMap[code]||"#AA0000" }
+          });
+        }
+
+        map.getSource("points").setData(geojson);
+        infoBox.innerHTML = "<b>観測点数:</b> " + markersCount;
+      })
+      .catch(e => console.warn("リアルタイム取得失敗（丸保持）", e))
+      .finally(() => { loading=false; });
+  }
+  setInterval(updateMarkers,100); // 高速更新
+
+  // ---------------------------
+  // P波/S波 と震源×
+  // ---------------------------
+  let epicenterMarker = null;
+
+  function createCircleGeoJSON(center, radius, steps=64){
+    const coords = [];
+    const [lng, lat] = center;
+    const latRad = lat * Math.PI / 180;
+    for(let i=0; i<=steps; i++){
+      const angle = (i/steps)*2*Math.PI;
+      const dx = (radius / 111000) / Math.cos(latRad) * Math.cos(angle);
+      const dy = (radius / 111000) * Math.sin(angle);
+      coords.push([lng+dx, lat+dy]);
+    }
+    return { type:"Feature", geometry:{ type:"Polygon", coordinates:[coords] } };
+  }
+
+  function updatePsWaveLayer(){
+    fetch(getRealTimeUrl())
+      .then(r => r.json())
+      .then(data => {
+        if(!data.psWave) return;
+        const p = data.psWave.items[0].pRadius * 1000;
+        const s = data.psWave.items[0].sRadius * 1000;
+        const lat = parseFloat(data.psWave.items[0].latitude.replace("N",""));
+        const lng = parseFloat(data.psWave.items[0].longitude.replace("E",""));
+        const center = [lng, lat];
+
+        map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, p)] });
+        map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, s)] });
+
+        if(!epicenterMarker){
+          const el = document.createElement('div');
+          el.className = 'epicenter-marker';
+          epicenterMarker = new maplibregl.Marker({ element: el }).setLngLat(center).addTo(map);
+        } else {
+          epicenterMarker.setLngLat(center);
+        }
+      })
+      .catch(e => console.warn("P/S波取得失敗", e));
+  }
+
+  updatePsWaveLayer();
+  setInterval(updatePsWaveLayer, 100); // 高速更新
+</script>
+
+</body>
+</html>
