@@ -94,7 +94,6 @@
   // Mapロード後レイヤ追加
   // ---------------------------
   map.on("load", () => {
-    // 観測点レイヤ
     map.addSource("points", { type:"geojson", data:geojson });
     map.addLayer({
       id:"points-layer",
@@ -109,7 +108,6 @@
       }
     });
 
-    // P/S波レイヤ
     map.addSource("pWaveSource", { type:"geojson", data:{ type:"FeatureCollection", features:[] } });
     map.addSource("sWaveSource", { type:"geojson", data:{ type:"FeatureCollection", features:[] } });
     map.addLayer({ id:"pWaveLayer", type:"line", source:"pWaveSource", paint:{ "line-color":"blue", "line-width":1 } });
@@ -170,10 +168,10 @@
       .catch(e => console.warn("リアルタイム取得失敗（丸保持）", e))
       .finally(() => { loading=false; });
   }
-  setInterval(updateMarkers,100); // 高速更新
+  setInterval(updateMarkers,100);
 
   // ---------------------------
-  // P波/S波 と震源×
+  // P波/S波 と震源×（EEW終了で消去対応）
   // ---------------------------
   let epicenterMarker = null;
 
@@ -194,29 +192,40 @@
     fetch(getRealTimeUrl())
       .then(r => r.json())
       .then(data => {
-        if(!data.psWave) return;
-        const p = data.psWave.items[0].pRadius * 1000;
-        const s = data.psWave.items[0].sRadius * 1000;
-        const lat = parseFloat(data.psWave.items[0].latitude.replace("N",""));
-        const lng = parseFloat(data.psWave.items[0].longitude.replace("E",""));
-        const center = [lng, lat];
+        const hasPsWave = data.psWave && data.psWave.items && data.psWave.items.length>0;
 
-        map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, p)] });
-        map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, s)] });
+        if(hasPsWave){
+          const p = data.psWave.items[0].pRadius * 1000;
+          const s = data.psWave.items[0].sRadius * 1000;
+          const lat = parseFloat(data.psWave.items[0].latitude.replace("N",""));
+          const lng = parseFloat(data.psWave.items[0].longitude.replace("E",""));
+          const center = [lng, lat];
 
-        if(!epicenterMarker){
-          const el = document.createElement('div');
-          el.className = 'epicenter-marker';
-          epicenterMarker = new maplibregl.Marker({ element: el }).setLngLat(center).addTo(map);
+          map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, p)] });
+          map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[createCircleGeoJSON(center, s)] });
+
+          if(!epicenterMarker){
+            const el = document.createElement('div');
+            el.className = 'epicenter-marker';
+            epicenterMarker = new maplibregl.Marker({ element: el }).setLngLat(center).addTo(map);
+          } else {
+            epicenterMarker.setLngLat(center);
+          }
         } else {
-          epicenterMarker.setLngLat(center);
+          // EEW終了：P/S波と震源マーカーを消す
+          map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[] });
+          map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[] });
+          if(epicenterMarker){
+            epicenterMarker.remove();
+            epicenterMarker = null;
+          }
         }
       })
       .catch(e => console.warn("P/S波取得失敗", e));
   }
 
   updatePsWaveLayer();
-  setInterval(updatePsWaveLayer, 100); // 高速更新
+  setInterval(updatePsWaveLayer, 100);
 </script>
 
 </body>
