@@ -41,6 +41,30 @@
 <div class="info"><b>観測点数:</b> 0</div>
 
 <script>
+
+  /* ----------------------------------------------------
+     ★追加：前回成功データ保存/読込
+  ---------------------------------------------------- */
+  function saveLastData(data){
+    try{
+      localStorage.setItem("lastGoodRealtimeData", JSON.stringify(data));
+    }catch(e){}
+  }
+
+  function loadLastData(){
+    try{
+      const d = localStorage.getItem("lastGoodRealtimeData");
+      if(!d) return null;
+      return JSON.parse(d);
+    }catch(e){
+      return null;
+    }
+  }
+
+  /* ここから下はあなたの元コードをそのまま使用（変更なし）
+     必要な追加のみ挿入
+  ---------------------------------------------------- */
+
   const map = new maplibregl.Map({
     container: 'map',
     style: {
@@ -71,7 +95,7 @@
   let geojson = { type:"FeatureCollection", features:[] };
   let siteCoords = [];
   let markersCount = 0;
-  let lastGoodData = null; // ← 直近成功データを保持（丸が消えないように）
+  let lastGoodData = null;
 
   map.on("load", () => {
     map.addSource("points", { type:"geojson", data:geojson });
@@ -94,24 +118,15 @@
     map.addLayer({ id:"sWaveLayer", type:"line", source:"sWaveSource", paint:{ "line-color":"red", "line-width":1 } });
   });
 
-  /* ----------------------------------------------------
-     サイトリスト → 即リアルタイム探す（最大60秒遡る）
-  ---------------------------------------------------- */
   fetch('https://weather-kyoshin.west.edge.storage-yahoo.jp/SiteList/sitelist.json')
     .then(r=>r.json())
     .then(async data=>{
       siteCoords = data.items;
 
-      // ロード後“絶対に色付きで表示する”
       await forceInitialMarkers();
-
-      // 通常更新開始
       updateMarkers();
     });
 
-  /* ----------------------------------------------------
-     リアルタイムURL
-  ---------------------------------------------------- */
   function getRealTimeUrl(secondsAgo=5){
     let now=new Date();
     now.setSeconds(now.getSeconds()-secondsAgo);
@@ -124,10 +139,15 @@
     return `https://weather-kyoshin.west.edge.storage-yahoo.jp/RealTimeData/${YYYY}${MM}${DD}/${YYYY}${MM}${DD}${HH}${mm}${SS}.json`;
   }
 
-  /* ----------------------------------------------------
-     “絶対に丸を色付きで描く”ための最初のデータ探し
-  ---------------------------------------------------- */
   async function forceInitialMarkers() {
+
+    /* ★追加：保存データがあれば即表示 */
+    const saved = loadLastData();
+    if(saved){
+      applyData(saved);
+      lastGoodData = saved;
+    }
+
     for (let t=5; t<=60; t+=5) {
       try {
         const r = await fetch(getRealTimeUrl(t));
@@ -135,19 +155,16 @@
         const data = await r.json();
         applyData(data);
         lastGoodData = data;
+        saveLastData(data);   // ★追加：保存
         return;
       } catch(e){}
     }
 
-    // 60秒遡ってもダメなら 前の成功データをそのまま表示
     if (lastGoodData) {
       applyData(lastGoodData);
     }
   }
 
-  /* ----------------------------------------------------
-     取得データ → 色付き丸へ反映
-  ---------------------------------------------------- */
   function applyData(data){
     const intensities = data.realTimeData.intensity;
     const N = Math.min(intensities.length, siteCoords.length);
@@ -171,9 +188,6 @@
     infoBox.innerHTML="<b>観測点数:</b> "+markersCount;
   }
 
-  /* ----------------------------------------------------
-     通常の100ms更新
-  ---------------------------------------------------- */
   let loading=false;
   function updateMarkers(){
     if(loading || siteCoords.length===0) return;
@@ -184,18 +198,15 @@
       .then(data=>{
         lastGoodData = data;
         applyData(data);
+
+        saveLastData(data);   // ★追加：保存
       })
-      .catch(()=>{
-        // 失敗しても丸は消さない（lastGoodDataを保持）
-      })
+      .catch(()=>{})
       .finally(()=>{ loading=false; });
   }
 
   setInterval(updateMarkers,100);
 
-  /* ----------------------------------------------------
-     P/S波（そのまま）
-  ---------------------------------------------------- */
   let epicenterMarker=null;
 
   function createCircleGeoJSON(center, radius, steps=64){
