@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>強震モニタ 高速P/S波 + 震源×</title>
+  <title>RS Monitor</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
@@ -41,30 +41,6 @@
 <div class="info"><b>観測点数:</b> 0</div>
 
 <script>
-
-  /* ----------------------------------------------------
-     ★追加：前回成功データ保存/読込
-  ---------------------------------------------------- */
-  function saveLastData(data){
-    try{
-      localStorage.setItem("lastGoodRealtimeData", JSON.stringify(data));
-    }catch(e){}
-  }
-
-  function loadLastData(){
-    try{
-      const d = localStorage.getItem("lastGoodRealtimeData");
-      if(!d) return null;
-      return JSON.parse(d);
-    }catch(e){
-      return null;
-    }
-  }
-
-  /* ここから下はあなたの元コードをそのまま使用（変更なし）
-     必要な追加のみ挿入
-  ---------------------------------------------------- */
-
   const map = new maplibregl.Map({
     container: 'map',
     style: {
@@ -96,6 +72,7 @@
   let siteCoords = [];
   let markersCount = 0;
   let lastGoodData = null;
+  let epicenterMarker = null;
 
   map.on("load", () => {
     map.addSource("points", { type:"geojson", data:geojson });
@@ -122,7 +99,6 @@
     .then(r=>r.json())
     .then(async data=>{
       siteCoords = data.items;
-
       await forceInitialMarkers();
       updateMarkers();
     });
@@ -140,14 +116,6 @@
   }
 
   async function forceInitialMarkers() {
-
-    /* ★追加：保存データがあれば即表示 */
-    const saved = loadLastData();
-    if(saved){
-      applyData(saved);
-      lastGoodData = saved;
-    }
-
     for (let t=5; t<=60; t+=5) {
       try {
         const r = await fetch(getRealTimeUrl(t));
@@ -155,14 +123,10 @@
         const data = await r.json();
         applyData(data);
         lastGoodData = data;
-        saveLastData(data);   // ★追加：保存
         return;
       } catch(e){}
     }
-
-    if (lastGoodData) {
-      applyData(lastGoodData);
-    }
+    if (lastGoodData) applyData(lastGoodData);
   }
 
   function applyData(data){
@@ -198,8 +162,6 @@
       .then(data=>{
         lastGoodData = data;
         applyData(data);
-
-        saveLastData(data);   // ★追加：保存
       })
       .catch(()=>{})
       .finally(()=>{ loading=false; });
@@ -207,9 +169,7 @@
 
   setInterval(updateMarkers,100);
 
-  let epicenterMarker=null;
-
-  function createCircleGeoJSON(center, radius, steps=64){
+  function createCircleGeoJSON(center, radius, steps=32){
     const coords=[];
     const [lng,lat]=center;
     const latRad=lat*Math.PI/180;
@@ -229,20 +189,27 @@
       .then(data=>{
         const w=data.psWave?.items;
         if(w && w.length>0){
-          const p=w[0].pRadius*1000;
-          const s=w[0].sRadius*1000;
           const lat=parseFloat(w[0].latitude.replace("N",""));
           const lng=parseFloat(w[0].longitude.replace("E",""));
           const center=[lng,lat];
 
-          map.getSource("pWaveSource").setData({
-            type:"FeatureCollection",
-            features:[ createCircleGeoJSON(center,p) ]
-          });
-          map.getSource("sWaveSource").setData({
-            type:"FeatureCollection",
-            features:[ createCircleGeoJSON(center,s) ]
-          });
+          const distP = w[0].pRadius*1000;
+          const distS = w[0].sRadius*1000;
+          const timeP = w[0].pTime;
+          const timeS = w[0].sTime;
+          const originTime = w[0].originTime || (Date.now()/1000);
+
+          const now = Date.now()/1000;
+          const elapsed = Math.max(now-originTime, 0.001);
+
+          const speedP = distP/Math.max(timeP,1);
+          const speedS = distS/Math.max(timeS,1);
+
+          const radiusP = speedP * elapsed;
+          const radiusS = speedS * elapsed;
+
+          map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[ createCircleGeoJSON(center,radiusP) ] });
+          map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[ createCircleGeoJSON(center,radiusS) ] });
 
           if(!epicenterMarker){
             const el=document.createElement('div');
@@ -251,7 +218,6 @@
           } else {
             epicenterMarker.setLngLat(center);
           }
-
         } else {
           map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[] });
           map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[] });
