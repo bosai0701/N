@@ -31,6 +31,7 @@
 "firstHeight":{"condition":"津波到達中と推測"},
 "maxHeight":{"description":"１０ｍ以上","value":10}
 },
+
 {
 "grade":"Warning",
 "immediate":false,
@@ -66,13 +67,7 @@
 "firstHeight":{"arrivalTime":"2011/03/11 16:00:00"},
 "maxHeight":{"description":"３ｍ","value":3}
 },
-{
-"grade":"Warning",
-"immediate":false,
-"name":"小笠原諸島",
-"firstHeight":{"arrivalTime":"2011/03/11 17:00:00"},
-"maxHeight":{"description":"３ｍ","value":3}
-},
+
 {
 "grade":"Watch",
 "immediate":false,
@@ -149,6 +144,84 @@
 "name":"宮崎県",
 "firstHeight":{"arrivalTime":"2011/03/11 18:30:00"},
 "maxHeight":{"description":"１ｍ","value":1}
+},
+
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"北海道日本海沿岸北部",
+"firstHeight":{"arrivalTime":"2011/03/11 18:00:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"北海道日本海沿岸南部",
+"firstHeight":{"arrivalTime":"2011/03/11 18:10:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"青森県日本海沿岸",
+"firstHeight":{"arrivalTime":"2011/03/11 18:20:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"秋田県",
+"firstHeight":{"arrivalTime":"2011/03/11 18:30:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"山形県",
+"firstHeight":{"arrivalTime":"2011/03/11 18:40:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"新潟県",
+"firstHeight":{"arrivalTime":"2011/03/11 19:00:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"富山県",
+"firstHeight":{"arrivalTime":"2011/03/11 19:20:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"石川県",
+"firstHeight":{"arrivalTime":"2011/03/11 19:30:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"福井県",
+"firstHeight":{"arrivalTime":"2011/03/11 19:40:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"京都府",
+"firstHeight":{"arrivalTime":"2011/03/11 20:00:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
+},
+{
+"grade":"Forecast",
+"immediate":false,
+"name":"兵庫県日本海沿岸",
+"firstHeight":{"arrivalTime":"2011/03/11 20:10:00"},
+"maxHeight":{"description":"０．５ｍ","value":0.5}
 }
 ]
 },
@@ -181,22 +254,6 @@
 "name":"石巻市",
 "scaleFrom":60,
 "scaleTo":70,
-"kindCode":"11",
-"arrivalTime":null
-},
-{
-"pref":"岩手県",
-"name":"宮古市",
-"scaleFrom":60,
-"scaleTo":70,
-"kindCode":"11",
-"arrivalTime":null
-},
-{
-"pref":"福島県",
-"name":"相馬市",
-"scaleFrom":55,
-"scaleTo":60,
 "kindCode":"11",
 "arrivalTime":null
 }
