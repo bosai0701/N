@@ -1,104 +1,211 @@
 [
-    {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249",
-    "code": 552,
-    "cancelled": false,
-    "issue": {
-      "source": "気象庁",
-      "time": "2019/06/18 22:24:00",
-      "type": "Focus"
-    },
-    "areas": [
-      {
-        "grade": "Warning",
-        "immediate": true,
-        "name": "福島県",
-        "firstHeight": {
-          "condition": "津波到達中と推測"
-        },
-        "maxHeight": {
-          "description": "３ｍ",
-          "value": 3
-        }
-      },
-      {
-        "grade": "Watch",
-        "immediate": false,
-        "name": "青森県太平洋沿岸",
-        "firstHeight": {
-          "arrivalTime": "2019/06/18 22:40:00"
-        },
-        "maxHeight": {
-          "description": "１ｍ",
-          "value": 1
-        }
-      }
-    ]
-  },
-  {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249",
-    "code": 555,
-    "areas": [
-      {
-        "id": 655,
-        "peer": 10
-      },
-      {
-        "id": 670,
-        "peer": 5
-      }
-    ]
-  },
-  {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249",
-    "code": 554,
-    "type": "Full"
-  },
-  {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249",
-    "code": 556,
-    "cancelled": false,
-    "earthquake": {
-      "condition": "",
-      "hypocenter": {
-        "name": "宗谷地方北部",
-        "reduceName": "北海道道北",
-        "latitude": 44.9,
-        "longitude": 142.1,
-        "depth": 10,
-        "magnitude": 5.5
-      },
-      "originTime": "2022/08/11 00:53:00",
-      "arrivalTime": "2022/08/11 00:53:10"
-    },
-    "issue": {
-      "time": "2022/08/11 00:53:24",
-      "eventId": "20220811005302",
-      "serial": "1"
-    },
-    "areas": [
-      {
-        "pref": "北海道道北",
-        "name": "上川地方北部",
-        "scaleFrom": 45,
-        "scaleTo": 45,
-        "kindCode": "11",
-        "arrivalTime": null
-      }
-    ]
-  },
-  {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249",
-    "code": 561,
-    "area": 250
-  },
-  {
-    "id": "5ee1ad7e02add676dd5a67a0",
-    "time": "2020/06/11 13:05:18.249"
-  }
+{
+"id":"20110311tsunami",
+"time":"2011/03/11 14:49:00",
+"code":552,
+"cancelled":false,
+"issue":{
+"source":"気象庁",
+"time":"2011/03/11 14:49:00",
+"type":"Focus"
+},
+"areas":[
+{
+"grade":"MajorWarning",
+"immediate":true,
+"name":"岩手県",
+"firstHeight":{"condition":"津波到達中と推測"},
+"maxHeight":{"description":"１０ｍ以上","value":10}
+},
+{
+"grade":"MajorWarning",
+"immediate":true,
+"name":"宮城県",
+"firstHeight":{"condition":"津波到達中と推測"},
+"maxHeight":{"description":"１０ｍ以上","value":10}
+},
+{
+"grade":"MajorWarning",
+"immediate":true,
+"name":"福島県",
+"firstHeight":{"condition":"津波到達中と推測"},
+"maxHeight":{"description":"１０ｍ以上","value":10}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"青森県太平洋沿岸",
+"firstHeight":{"arrivalTime":"2011/03/11 15:10:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"茨城県",
+"firstHeight":{"arrivalTime":"2011/03/11 15:20:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"千葉県九十九里・外房",
+"firstHeight":{"arrivalTime":"2011/03/11 15:30:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"千葉県内房",
+"firstHeight":{"arrivalTime":"2011/03/11 15:40:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"伊豆諸島",
+"firstHeight":{"arrivalTime":"2011/03/11 16:00:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Warning",
+"immediate":false,
+"name":"小笠原諸島",
+"firstHeight":{"arrivalTime":"2011/03/11 17:00:00"},
+"maxHeight":{"description":"３ｍ","value":3}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"北海道太平洋沿岸東部",
+"firstHeight":{"arrivalTime":"2011/03/11 15:30:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"北海道太平洋沿岸中部",
+"firstHeight":{"arrivalTime":"2011/03/11 15:40:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"北海道太平洋沿岸西部",
+"firstHeight":{"arrivalTime":"2011/03/11 16:00:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"東京湾内湾",
+"firstHeight":{"arrivalTime":"2011/03/11 16:00:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"神奈川県",
+"firstHeight":{"arrivalTime":"2011/03/11 16:10:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"静岡県",
+"firstHeight":{"arrivalTime":"2011/03/11 16:30:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"愛知県外海",
+"firstHeight":{"arrivalTime":"2011/03/11 17:00:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"三重県南部",
+"firstHeight":{"arrivalTime":"2011/03/11 17:10:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"和歌山県",
+"firstHeight":{"arrivalTime":"2011/03/11 17:30:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"高知県",
+"firstHeight":{"arrivalTime":"2011/03/11 18:00:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+},
+{
+"grade":"Watch",
+"immediate":false,
+"name":"宮崎県",
+"firstHeight":{"arrivalTime":"2011/03/11 18:30:00"},
+"maxHeight":{"description":"１ｍ","value":1}
+}
+]
+},
+{
+"id":"20110311tsunami",
+"time":"2011/03/11 14:46:00",
+"code":556,
+"cancelled":false,
+"earthquake":{
+"condition":"",
+"hypocenter":{
+"name":"三陸沖",
+"reduceName":"東北地方太平洋沖",
+"latitude":38.322,
+"longitude":142.369,
+"depth":24,
+"magnitude":9.0
+},
+"originTime":"2011/03/11 14:46:18",
+"arrivalTime":"2011/03/11 14:46:30"
+},
+"issue":{
+"time":"2011/03/11 14:49:00",
+"eventId":"20110311144618",
+"serial":"1"
+},
+"areas":[
+{
+"pref":"宮城県",
+"name":"石巻市",
+"scaleFrom":60,
+"scaleTo":70,
+"kindCode":"11",
+"arrivalTime":null
+},
+{
+"pref":"岩手県",
+"name":"宮古市",
+"scaleFrom":60,
+"scaleTo":70,
+"kindCode":"11",
+"arrivalTime":null
+},
+{
+"pref":"福島県",
+"name":"相馬市",
+"scaleFrom":55,
+"scaleTo":60,
+"kindCode":"11",
+"arrivalTime":null
+}
+]
+},
+{
+"id":"20110311tsunami",
+"time":"2011/03/11 15:14:00",
+"code":554,
+"type":"Full"
+}
 ]
