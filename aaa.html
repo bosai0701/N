@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title>緊急地震速報モニター</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<link href="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.css" rel="stylesheet">
+
+<style>
+
+body{
+margin:0;
+font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto;
+background:#0f172a;
+color:white;
+}
+
+header{
+background:#020617;
+padding:12px;
+text-align:center;
+font-weight:bold;
+}
+
+.container{
+display:grid;
+grid-template-columns:1fr 420px;
+height:calc(100vh - 50px);
+}
+
+#map{
+width:100%;
+height:100%;
+}
+
+.panel{
+overflow:auto;
+background:#020617;
+padding:15px;
+}
+
+.card{
+background:#0f172a;
+border-radius:10px;
+padding:10px;
+margin-bottom:10px;
+}
+
+.key{
+font-size:12px;
+color:#94a3b8;
+}
+
+.val{
+font-size:15px;
+word-break:break-all;
+}
+
+.section{
+margin-bottom:15px;
+}
+
+.epicenter{
+color:#ff0000;
+font-size:34px;
+font-weight:bold;
+text-shadow:
+0 0 6px #ff0000,
+0 0 10px #ff0000;
+}
+
+@media(max-width:900px){
+
+.container{
+grid-template-columns:1fr;
+grid-template-rows:50vh auto;
+}
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+緊急地震速報モニター
+</header>
+
+<div class="container">
+
+<div id="map"></div>
+
+<div class="panel">
+<div class="section">
+<h3>地震詳細</h3>
+<div id="details"></div>
+</div>
+</div>
+
+</div>
+
+<script src="https://unpkg.com/maplibre-gl@4.7.1/dist/maplibre-gl.js"></script>
+
+<script>
+
+const labelMap={
+Hypocenter:"震源地",
+Title:"情報タイトル",
+Depth:"震源の深さ(km)",
+Magunitude:"マグニチュード",
+EventID:"イベントID",
+isAssumption:"仮定震源か",
+AnnouncedTime:"発表時刻",
+OriginTime:"発生時刻",
+WarnArea:"警報対象地域",
+isTraining:"訓練か",
+Longitude:"経度",
+Latitude:"緯度",
+CodeType:"電文タイプ",
+OriginalText:"元電文",
+isSea:"海域地震か",
+isCancel:"キャンセルされたか",
+Pond:"P波到達予測秒",
+MaxIntensity:"最大予測震度",
+Serial:"電文番号",
+isWarn:"警報か",
+isFinal:"最終報か",
+Source:"発表機関",
+Status:"発表状態",
+Reason:"震度変化理由",
+String:"震度変化説明",
+Epicenter:"震源計算方法",
+Magnitude:"マグニチュード計算方法"
+};
+
+let travelTable=[];
+
+async function loadTravelTable(){
+
+const txt=await fetch("tjma2001.txt").then(r=>r.text());
+const lines=txt.split("\n");
+
+for(const line of lines){
+
+const m=line.match(/P\s+([\d.]+)\s+S\s+([\d.]+)\s+(\d+)\s+(\d+)/);
+
+if(!m)continue;
+
+travelTable.push({
+p:parseFloat(m[1]),
+s:parseFloat(m[2]),
+depth:parseInt(m[3]),
+dist:parseInt(m[4])
+});
+
+}
+
+}
+
+function getRadius(t,depth,type){
+
+let r=0;
+
+for(const row of travelTable){
+
+if(Math.abs(row.depth-depth)>5)continue;
+
+const time= type==="P"?row.p:row.s;
+
+if(time<=t) r=row.dist;
+
+}
+
+if(r>2000) r=2000;
+
+return r;
+
+}
+
+const map=new maplibregl.Map({
+container:"map",
+style:{
+version:8,
+sources:{
+osm:{
+type:"raster",
+tiles:[
+"https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+],
+tileSize:256,
+attribution:"© OpenStreetMap contributors"
+}
+},
+layers:[
+{
+id:"osm",
+type:"raster",
+source:"osm"
+}
+]
+},
+center:[139,35],
+zoom:4
+});
+
+map.addControl(new maplibregl.NavigationControl());
+
+function renderJSON(obj,prefix=""){
+
+let html="";
+
+for(const key in obj){
+
+const value=obj[key];
+
+let label=labelMap[key] || key;
+
+if(typeof value==="object" && value!==null){
+
+html+=renderJSON(value,prefix+label+" → ");
+
+}else{
+
+html+=`
+<div class="card">
+<div class="key">${prefix}${label}</div>
+<div class="val">${value}</div>
+</div>
+`;
+
+}
+
+}
+
+return html;
+
+}
+
+async function loadEEW(){
+
+const res=await fetch("https://api.wolfx.jp/jma_eew.json");
+const data=await res.json();
+
+document.getElementById("details").innerHTML=renderJSON(data);
+
+const el=document.createElement("div");
+el.className="epicenter";
+el.textContent="×";
+
+new maplibregl.Marker({
+element:el,
+anchor:"center"
+})
+.setLngLat([data.Longitude,data.Latitude])
+.addTo(map);
+
+map.flyTo({
+center:[data.Longitude,data.Latitude],
+zoom:6
+});
+
+startWave(data);
+
+}
+
+function createCircleSource(id,color){
+
+map.addSource(id,{
+type:"geojson",
+data:{
+type:"FeatureCollection",
+features:[]
+}
+});
+
+map.addLayer({
+id:id,
+type:"line",
+source:id,
+paint:{
+"line-color":color,
+"line-width":3
+}
+});
+
+}
+
+function createCircle(lng,lat,radius){
+
+const points=64;
+const coords=[];
+
+for(let i=0;i<=points;i++){
+
+const angle=i/points*360;
+
+const dx=radius*Math.cos(angle*Math.PI/180);
+const dy=radius*Math.sin(angle*Math.PI/180);
+
+const earth=111;
+
+const newLng=lng+(dx/(earth*Math.cos(lat*Math.PI/180)));
+const newLat=lat+(dy/earth);
+
+coords.push([newLng,newLat]);
+
+}
+
+return {
+type:"Feature",
+geometry:{
+type:"LineString",
+coordinates:coords
+}
+};
+
+}
+
+function startWave(data){
+
+const origin=new Date(data.OriginTime).getTime();
+
+createCircleSource("pwave","#3b82f6");
+createCircleSource("swave","#ef4444");
+
+setInterval(()=>{
+
+const now=Date.now();
+const t=(now-origin)/1000;
+
+if(t<0)return;
+
+const pRadius=getRadius(t,data.Depth,"P");
+const sRadius=getRadius(t,data.Depth,"S");
+
+const pCircle=createCircle(data.Longitude,data.Latitude,pRadius);
+const sCircle=createCircle(data.Longitude,data.Latitude,sRadius);
+
+map.getSource("pwave").setData({
+type:"FeatureCollection",
+features:[pCircle]
+});
+
+map.getSource("swave").setData({
+type:"FeatureCollection",
+features:[sCircle]
+});
+
+},1000);
+
+}
+
+async function init(){
+
+await loadTravelTable();
+await loadEEW();
+
+}
+
+init();
+
+</script>
+
+</body>
+</html>
