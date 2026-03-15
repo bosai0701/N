@@ -1,10 +1,63 @@
-{"Control":{"DateTime":"2025-08-02T09:30:00Z","EditorialOffice":"気象庁本庁","Title":"津波警報・注
+{"Control":{"DateTime":"2025-07-31T01:46:57Z","EditorialOffice":"大阪管区気象台","Title":"津波情報
+a","Status":"通常","PublishingOffice":"気象庁"},"Head":
+{"Serial":"76","InfoKindVersion":"1.0_1","InfoType":"発表","InfoKind":"津波情
+報","TargetDateTime":"2025-07-31T10:46:00+09:00","Headline":{"Text":"各地の満潮時刻と津波到達
+予想時刻をお知らせします。"},"EventID":"20250730082807","Title":"各地の満潮時刻・津波到達予
+想時刻に関する情報","enTitle":"Tsunami Information (High Tide Time and Estimated Tsunami Arrival
+Time at each place)","ReportDateTime":"2025-07-31T10:46:00+09:00"},"Body":{"Tsunami":
+{"Forecast":{"Item":[{"Area":{"Code":"100","Name":"北海道太平洋沿岸東部","enName":"EASTERN
+PART OF PACIFIC COAST OF HOKKAIDO"},"Category":{"LastKind":{"Code":"62","Name":"津波注
+意報","enName":"Tsunami Advisory"},"Kind":{"Code":"62","Name":"津波注意報","enName":"Tsunami
+Advisory"}},"FirstHeight":{"Condition":"第１波の到達を確認"},"MaxHeight":
+{"TsunamiHeight":"1"},"Station":[{"HighTideDateTime":"2025-07-31T19:06:00+09:00","Name":"釧
+路","FirstHeight":{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":42.979999999999997,"lon":144.37},"Code":"10001","enName":"KUSHIRO"},
+{"HighTideDateTime":"2025-07-31T18:50:00+09:00","Name":"根室市花咲","FirstHeight":
+{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":43.280000000000001,"lon":145.56999999999999},"Code":"10002","enName":"NEMUROSHI
+HANASAKI"},{"HighTideDateTime":"2025-07-31T18:59:00+09:00","Name":"根室港","FirstHeight":
+{"Condition":"津波到達中と推測"},"latlon":
+{"lat":43.340000000000003,"lon":145.58000000000001},"Code":"10020","enName":"NEMUROKO"}
+,{"HighTideDateTime":"2025-07-31T18:49:00+09:00","Name":"浜中町霧多布港","FirstHeight":
+{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":43.079999999999998,"lon":145.12},"Code":"10021","enName":"HAMANAKACHO
+KIRITAPPUKO"}]},{"Area":{"Code":"101","Name":"北海道太平洋沿岸中部","enName":"CENTRAL
+PART OF PACIFIC COAST OF HOKKAIDO"},"Category":{"LastKind":{"Code":"62","Name":"津波注
+意報","enName":"Tsunami Advisory"},"Kind":{"Code":"62","Name":"津波注意報","enName":"Tsunami
+Advisory"}},"FirstHeight":{"Condition":"第１波の到達を確認"},"MaxHeight":
+{"TsunamiHeight":"1"},"Station":[{"HighTideDateTime":"2025-07-31T19:06:00+09:00","Name":"浦
+河","FirstHeight":{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":42.170000000000002,"lon":142.77000000000001},"Code":"10101","enName":"URAKAWA"},
+{"HighTideDateTime":"2025-07-31T18:54:00+09:00","Name":"十勝港","FirstHeight":{"Condition":"第
+１波の到達を確認"},"latlon":
+{"lat":42.299999999999997,"lon":143.31999999999999},"Code":"10102","enName":"TOKACHIKO"},
+{"HighTideDateTime":"2025-07-31T19:08:00+09:00","Name":"えりも町庶野","FirstHeight":
+{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":42.049999999999997,"lon":143.30000000000001},"Code":"10103","enName":"ERIMOCHO
+SHOYA"}]},{"Area":{"Code":"102","Name":"北海道太平洋沿岸西部","enName":"WESTERN PART OF
+PACIFIC COAST OF HOKKAIDO"},"Category":{"LastKind":{"Code":"62","Name":"津波注意
+報","enName":"Tsunami Advisory"},"Kind":{"Code":"62","Name":"津波注意報","enName":"Tsunami
+Advisory"}},"FirstHeight":{"Condition":"第１波の到達を確認"},"MaxHeight":
+{"TsunamiHeight":"1"},"Station":[{"HighTideDateTime":"2025-07-31T19:24:00+09:00","Name":"函
+館","FirstHeight":{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":41.780000000000001,"lon":140.72},"Code":"10202","enName":"HAKODATE"},
+{"HighTideDateTime":"2025-07-31T19:04:00+09:00","Name":"苫小牧西港","FirstHeight":
+{"Condition":"津波到達中と推測"},"latlon":
+{"lat":42.630000000000003,"lon":141.62},"Code":"10203","enName":"TOMAKOMAI NISHIKO"},
+{"HighTideDateTime":"2025-07-31T20:08:00+09:00","Name":"福島町吉岡","FirstHeight":
+{"Condition":"津波到達中と推測"},"latlon":
+{"lat":41.450000000000003,"lon":140.22999999999999},"Code":"10204","enName":"FUKUSHIMAC
+HO YOSHIOKA"},{"HighTideDateTime":"2025-07-31T19:04:00+09:00","Name":"苫小牧東
+港","FirstHeight":{"Condition":"第１波の到達を確認"},"latlon":
+{"lat":42.600000000000001,"lon":141.81999999999999},"Code":"10221","enName":"TOMAKOMAI
+HIGASHIKO"} {"HighTideDateTime":"2025-07-31T19:04:00+09:00" "Name":"白老港" "FirstHeight":
+{"Control":{"DateTime":"2025-08-01T09:50:00Z","EditorialOffice":"気象庁本庁","Title":"津波警報・注
 意報・予報a","Status":"通常","PublishingOffice":"気象庁"},"Head":
 {"Serial":null,"InfoKindVersion":"1.0_1","InfoType":"発表","InfoKind":"津波警報・注意報・予
-報","TargetDateTime":"2025-08-02T18:30:00+09:00","ValidDateTime":"2025-08-03T19:00:00+09:00
+報","TargetDateTime":"2025-08-01T18:50:00+09:00","ValidDateTime":"2025-08-02T19:00:00+09:00
 ","EventID":"20250730082807","Title":"津波予報","Headline":{"Text":"津波予報（若干の海面変動）
 を発表しました。"},"enTitle":"Tsunami
-Forecast","ReportDateTime":"2025-08-02T18:30:00+09:00"},"Body":{"Comments":
+Forecast","ReportDateTime":"2025-08-01T18:50:00+09:00"},"Body":{"Comments":
 {"WarningComment":{"Code":"0124 0104 0107","enText":"[Tsunami Forecast] Slight sea-level
 changes may be observed in coastal regions, but no tsunami damage is expected.\nPay attention
 when fishing, swimming or engaging in other marine activities, as there may still be slight sea-level
@@ -17,37 +70,37 @@ changes.\nNo Major Tsunami Warnings, Tsunami Warnings or Advisories are currentl
 ter":{"Area":{"Coordinate":"+52.2+160.0\/","DetailedCode":"1219","Name":"カムチャツカ半島付
 近","DetailedName":"ロシア、カムチャツカ半島東方沖","Code":"941","enName":"Adjacent
 Kamchatka Peninsula"},"Source":"ＰＴＷＣ"},"Magnitude":"8.7"}],"Text":"［海面変動の見通し］\n
-これらの沿岸では津波に伴う海面変動が観測されておりますので、今後さらに１日程度は継続する
-可能性が高いと考えられます。\n［留意事項］\n 津波注意報が発表されていたことや、津波が観
-測されていることについては、これまでの情報等により十分に認識されていると考えられます。\n
-今後さらに１日程度は海面変動が継続すると考えられます。海に入っての作業や釣り、海水浴など
-に際しては十分な留意が必要です。","Tsunami":{"Forecast":{"Item":[{"Area":
-{"Code":"100","Name":"北海道太平洋沿岸東部","enName":"EASTERN PART OF PACIFIC COAST
-OF HOKKAIDO"},"Category":{"LastKind":{"Code":"71","Name":"津波予報（若干の海面変
-動）","enName":"Tsunami Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干の海面変
+これらの沿岸では津波に伴う海面変動が観測されておりますので、今後１日程度は継続する可能性
+が高いと考えられます。\n［留意事項］\n 津波注意報が発表されていたことや、津波が観測され
+ていることについては、これまでの情報等により十分に認識されていると考えられます。\n８月１
+日の朝頃から、太平洋を伝播した津波が南米沿岸で反射して日本付近に伝わり、引き続きやや高い
+津波が観測されている地点があります。\n今後１日程度は海面変動が継続すると考えられます。海
+に入っての作業や釣り、海水浴などに際しては十分な留意が必要です。","Tsunami":{"Forecast":
+{"Item":[{"Area":{"Code":"100","Name":"北海道太平洋沿岸東部","enName":"EASTERN PART OF
+PACIFIC COAST OF HOKKAIDO"},"Category":{"LastKind":{"Code":"72","Name":"津波予報（若干の
+海面変動）","enName":"Tsunami Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干の海面変
 動）","enName":"Tsunami Forecast"}}},{"Area":{"Code":"101","Name":"北海道太平洋沿岸中
 部","enName":"CENTRAL PART OF PACIFIC COAST OF HOKKAIDO"},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
+{"Code":"72","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
 {"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
 {"Code":"102","Name":"北海道太平洋沿岸西部","enName":"WESTERN PART OF PACIFIC COAST
-OF HOKKAIDO"},"Category":{"LastKind":{"Code":"71","Name":"津波予報（若干の海面変
+OF HOKKAIDO"},"Category":{"LastKind":{"Code":"72","Name":"津波予報（若干の海面変
+動）","enName":"Tsunami Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干の海面変
+動）","enName":"Tsunami Forecast"}}},{"Area":{"Code":"110","Name":"北海道日本海沿岸北
+部","enName":"NORTHERN PART OF JAPAN SEA COAST OF HOKKAIDO"},"Category":
+{"LastKind":{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami
+Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami
+Forecast"}}},{"Area":{"Code":"111","Name":"北海道日本海沿岸南部","enName":"SOUTHERN PART
+OF JAPAN SEA COAST OF HOKKAIDO"},"Category":{"LastKind":{"Code":"71","Name":"津波予報
+（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干
+の海面変動）","enName":"Tsunami Forecast"}}},{"Area":{"Code":"120","Name":"オホーツク海沿
+岸","enName":"OKHOTSK SEA COAST OF HOKKAIDO"},"Category":{"LastKind":
+{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
+{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
+{"Code":"200","Name":"青森県日本海沿岸","enName":"JAPAN SEA COAST OF AOMORI
+PREF."},"Category":{"LastKind":{"Code":"71","Name":"津波予報（若干の海面変
 動）","enName":"Tsunami Forecast"},"Kind":{"Code":"71","Name":"津波予報（若干の海面変
 動）","enName":"Tsunami Forecast"}}},{"Area":{"Code":"201","Name":"青森県太平洋沿
 岸","enName":"PACIFIC COAST OF AOMORI PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
-{"Code":"210","Name":"岩手県","enName":"IWATE PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
-{"Code":"220","Name":"宮城県","enName":"MIYAGI PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
-{"Code":"250","Name":"福島県","enName":"FUKUSHIMA PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
-{"Code":"300","Name":"茨城県","enName":"IBARAKI PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"}}},{"Area":
-{"Code":"530","Name":"和歌山県","enName":"WAKAYAMA PREF."},"Category":{"LastKind":
-{"Code":"71","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
+{"Code":"72","Name":"津波予報（若干の海面変動）","enName":"Tsunami Forecast"},"Kind":
 {"Code":"71" "Name":"津波予報（若干の海面変動）" "enName":"Tsunami Forecast"}}} {"Area":
