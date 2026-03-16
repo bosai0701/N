@@ -1,75 +1,159 @@
 {
- "Control":{
-  "DateTime":"2011-03-11T15:30:00+09:00",
-  "EditorialOffice":"気象庁",
-  "Title":"津波警報・津波注意報・津波予報",
-  "Status":"通常",
-  "PublishingOffice":"気象庁"
+ "event":"20110311_TOHOKU_EARTHQUAKE_TSUNAMI",
+
+ "earthquake":{
+  "originTime":"2011-03-11T14:46:00+09:00",
+  "hypocenter":"三陸沖",
+  "magnitude":9.0
  },
- "Head":{
-  "InfoType":"発表",
-  "InfoKind":"津波警報・注意報・津波予報",
-  "TargetDateTime":"2011-03-11T15:30:00+09:00",
-  "EventID":"20110311153000",
-  "Headline":{
-   "Text":"津波警報・津波注意報を更新"
-  }
- },
- "Body":{
-  "Tsunami":{
-   "Forecast":{
-    "Item":[
 
-     {"Area":{"Name":"北海道太平洋沿岸東部"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"3"}},
-     {"Area":{"Name":"北海道太平洋沿岸中部"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"6"}},
-     {"Area":{"Name":"北海道太平洋沿岸西部"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"4"}},
+ "areas":[
+  "北海道太平洋沿岸東部",
+  "北海道太平洋沿岸中部",
+  "北海道太平洋沿岸西部",
+  "青森県日本海沿岸",
+  "青森県太平洋沿岸",
+  "陸奥湾",
+  "岩手県",
+  "宮城県",
+  "福島県",
+  "茨城県",
+  "千葉県九十九里・外房",
+  "千葉県内房",
+  "東京湾内湾",
+  "伊豆諸島",
+  "小笠原諸島",
+  "相模湾・三浦半島",
+  "静岡県",
+  "愛知県外海",
+  "三重県南部",
+  "和歌山県",
+  "徳島県",
+  "高知県",
+  "宮崎県",
+  "鹿児島県東部",
+  "種子島・屋久島地方",
+  "奄美群島・トカラ列島",
+  "沖縄本島地方",
+  "大東島地方",
+  "宮古島・八重山地方",
+  "秋田県",
+  "山形県",
+  "新潟県上中下越",
+  "佐渡",
+  "富山県",
+  "石川県能登",
+  "石川県加賀",
+  "福井県",
+  "京都府",
+  "兵庫県北部",
+  "鳥取県",
+  "島根県出雲・石見",
+  "島根県隠岐",
+  "山口県日本海沿岸",
+  "福岡県日本海沿岸",
+  "佐賀県北部",
+  "長崎県西方",
+  "長崎県南西部"
+ ],
 
-     {"Area":{"Name":"青森県日本海沿岸"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"青森県太平洋沿岸"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"8"}},
-     {"Area":{"Name":"陸奥湾"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"1"}},
+ "history":[
 
-     {"Area":{"Name":"岩手県"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"10m以上"}},
-     {"Area":{"Name":"宮城県"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"10m以上"}},
+  {
+   "time":"2011-03-11T14:49:00+09:00",
+   "changes":[
+    {"area":"岩手県","kind":"MajorWarning","height":"3m","revise":"追加"},
+    {"area":"宮城県","kind":"MajorWarning","height":"6m","revise":"追加"},
+    {"area":"福島県","kind":"MajorWarning","height":"3m","revise":"追加"},
 
-     {"Area":{"Name":"福島県"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"10m以上"}},
-     {"Area":{"Name":"茨城県"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"10m以上"}},
+    {"area":"北海道太平洋沿岸東部","kind":"Warning","height":"0.5m","revise":"追加"},
+    {"area":"北海道太平洋沿岸中部","kind":"Warning","height":"1m","revise":"追加"},
+    {"area":"北海道太平洋沿岸西部","kind":"Warning","height":"0.5m","revise":"追加"},
+    {"area":"青森県太平洋沿岸","kind":"Warning","height":"1m","revise":"追加"},
+    {"area":"茨城県","kind":"Warning","height":"2m","revise":"追加"},
+    {"area":"千葉県九十九里・外房","kind":"Warning","height":"2m","revise":"追加"},
+    {"area":"伊豆諸島","kind":"Warning","height":"1m","revise":"追加"},
 
-     {"Area":{"Name":"千葉県九十九里・外房"},"Category":{"Kind":{"Name":"大津波警報"}},"MaxHeight":{"TsunamiHeight":"10m以上"}},
-     {"Area":{"Name":"千葉県内房"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"東京湾内湾"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"伊豆諸島"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"4"}},
-     {"Area":{"Name":"小笠原諸島"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"相模湾・三浦半島"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"静岡県"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"愛知県外海"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"1"}},
-     {"Area":{"Name":"三重県南部"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"和歌山県"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"徳島県"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"高知県"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"宮崎県"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"1"}},
-     {"Area":{"Name":"鹿児島県東部"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"種子島・屋久島地方"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-     {"Area":{"Name":"奄美群島・トカラ列島"},"Category":{"Kind":{"Name":"津波警報"}},"MaxHeight":{"TsunamiHeight":"2"}},
-
-     {"Area":{"Name":"沖縄本島地方"},"Category":{"Kind":{"Name":"津波注意報"}},"MaxHeight":{"TsunamiHeight":"1"}},
-     {"Area":{"Name":"大東島地方"},"Category":{"Kind":{"Name":"津波注意報"}},"MaxHeight":{"TsunamiHeight":"1"}},
-     {"Area":{"Name":"宮古島・八重山地方"},"Category":{"Kind":{"Name":"津波注意報"}},"MaxHeight":{"TsunamiHeight":"1"}}
-
-    ]
-   }
+    {"area":"小笠原諸島","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"相模湾・三浦半島","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"静岡県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"愛知県外海","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"三重県南部","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"和歌山県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"徳島県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"高知県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"宮崎県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"鹿児島県東部","kind":"Watch","height":"0.5m","revise":"追加"}
+   ]
   },
 
-  "Earthquake":[
-   {
-    "OriginTime":"2011-03-11T14:46:00+09:00",
-    "Hypocenter":{"Area":{"Name":"三陸沖"}},
-    "Magnitude":"9.0"
-   }
-  ]
- }
+  {
+   "time":"2011-03-11T15:14:00+09:00",
+   "changes":[
+    {"area":"青森県太平洋沿岸","kind":"MajorWarning","height":"3m","revise":"更新"},
+    {"area":"岩手県","height":"6m","revise":"更新"},
+    {"area":"福島県","height":"6m","revise":"更新"},
+    {"area":"小笠原諸島","kind":"Warning","height":"1m","revise":"更新"}
+   ]
+  },
+
+  {
+   "time":"2011-03-11T15:30:00+09:00",
+   "changes":[
+    {"area":"岩手県","height":"10m以上","revise":"更新"},
+    {"area":"宮城県","height":"10m以上","revise":"更新"},
+    {"area":"福島県","height":"10m以上","revise":"更新"},
+    {"area":"茨城県","kind":"MajorWarning","height":"10m以上","revise":"更新"},
+    {"area":"千葉県九十九里・外房","kind":"MajorWarning","height":"10m以上","revise":"更新"}
+   ]
+  },
+
+  {
+   "time":"2011-03-11T16:08:00+09:00",
+   "changes":[
+    {"area":"北海道太平洋沿岸東部","height":"6m","revise":"更新"},
+    {"area":"北海道太平洋沿岸中部","height":"8m","revise":"更新"},
+    {"area":"北海道太平洋沿岸西部","height":"6m","revise":"更新"},
+    {"area":"青森県太平洋沿岸","height":"10m以上","revise":"更新"}
+   ]
+  },
+
+  {
+   "time":"2011-03-11T18:47:00+09:00",
+   "changes":[
+    {"area":"秋田県","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"山形県","kind":"Watch","height":"0.5m","revise":"追加"}
+   ]
+  },
+
+  {
+   "time":"2011-03-11T21:35:00+09:00",
+   "changes":[
+    {"area":"北海道日本海沿岸北部","kind":"Watch","height":"0.5m","revise":"追加"},
+    {"area":"オホーツク海沿岸","kind":"Watch","height":"0.5m","revise":"追加"}
+   ]
+  },
+
+  {
+   "time":"2011-03-12T03:20:00+09:00",
+   "changes":[
+    {"area":"日本全国沿岸","kind":"WarningまたはWatch","revise":"拡大"}
+   ]
+  },
+
+  {
+   "time":"2011-03-12T20:20:00+09:00",
+   "changes":[
+    {"area":"多数沿岸","revise":"警報解除"}
+   ]
+  },
+
+  {
+   "time":"2011-03-13T17:58:00+09:00",
+   "changes":[
+    {"area":"全国","revise":"全解除"}
+   ]
+  }
+
+ ]
 }
