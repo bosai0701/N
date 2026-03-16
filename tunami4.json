@@ -1,1 +1,264 @@
-ami Warning"}},"FirstHeight":{"Condition":"第１波の到達を確認"},"MaxHeight": {"TsunamiHeight":"3"},"Station":[{"HighTideDateTime":"2025-07-30T18:54:00+09:00","Name":"函 館","FirstHeight":{"Condition":"第１波の到達を確認","Revise":"更新"},"latlon": {"lat":41.780000000000001,"lon":140.72},"Code":"10202","enName":"HAKODATE"}, {"HighTideDateTime":"2025-07-30T18:38:00+09:00","Name":"苫小牧西港","FirstHeight": {"Condition":"津波到達中と推測"},"latlon": {"lat":42.630000000000003,"lon":141.62},"Code":"10203","enName":"TOMAKOMAI NISHIKO"}, {"HighTideDateTime":"2025-07-30T19:38:00+09:00","Name":"福島町吉岡","FirstHeight": {"Condition":"津波到達中と推測"},"latlon": {"lat":41.450000000000003,"lon":140.22999999999999},"Code":"10204","enName":"FUKUSHIMAC HO YOSHIOKA"},{"HighTideDateTime":"2025-07-30T18:39:00+09:00","Name":"苫小牧東 港","FirstHeight":{"Condition":"第１波の到達を確認"},"latlon": {"lat":42.600000000000001,"lon":141.81999999999999},"Code":"10221","enName":"TOMAKOMAI HIGASHIKO"} {"HighTideDateTime":"2025-07-30T18:38:00+09:00" "Name":"白老港" "FirstHeight":
+{
+  "Control": {
+    "DateTime": "2025-07-30T07:12:36Z",
+    "EditorialOffice": "大阪管区気象台",
+    "Title": "津波情報a",
+    "Status": "通常",
+    "PublishingOffice": "気象庁"
+  },
+  "Head": {
+    "Serial": "48",
+    "InfoKindVersion": "1.0_1",
+    "InfoType": "発表",
+    "InfoKind": "津波情報",
+    "TargetDateTime": "2025-07-30T16:11:00+09:00",
+    "Headline": {
+      "Text": "３０日１６時１１分現在の、津波の観測値をお知らせします。"
+    },
+    "EventID": "20250730082807",
+    "Title": "津波観測に関する情報",
+    "enTitle": "Tsunami Information (Tsunami Observations)",
+    "ReportDateTime": "2025-07-30T16:12:00+09:00"
+  },
+  "Body": {
+    "Tsunami": {
+      "Forecast": {
+        "Item": [
+          {
+            "Area": {
+              "Code": "100",
+              "Name": "北海道太平洋沿岸東部",
+              "enName": "EASTERN PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "62",
+                "Name": "津波注意報",
+                "enName": "Tsunami Advisory"
+              },
+              "Kind": {
+                "Code": "51",
+                "Name": "津波警報",
+                "enName": "Tsunami Warning"
+              }
+            },
+            "FirstHeight": {
+              "Condition": "第１波の到達を確認"
+            },
+            "MaxHeight": {
+              "TsunamiHeight": "3"
+            },
+            "Station": [
+              {
+                "HighTideDateTime": "2025-07-30T18:47:00+09:00",
+                "Name": "釧路",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 42.98,
+                  "lon": 144.37
+                },
+                "Code": "10001",
+                "enName": "KUSHIRO"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:27:00+09:00",
+                "Name": "根室市花咲",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 43.28,
+                  "lon": 145.57
+                },
+                "Code": "10002",
+                "enName": "NEMUROSHI HANASAKI"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:40:00+09:00",
+                "Name": "根室港",
+                "FirstHeight": {
+                  "Condition": "津波到達中と推測"
+                },
+                "latlon": {
+                  "lat": 43.34,
+                  "lon": 145.58
+                },
+                "Code": "10020",
+                "enName": "NEMUROKO"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:25:00+09:00",
+                "Name": "浜中町霧多布港",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 43.08,
+                  "lon": 145.12
+                },
+                "Code": "10021",
+                "enName": "HAMANAKACHO KIRITAPPUKO"
+              }
+            ]
+          },
+          {
+            "Area": {
+              "Code": "101",
+              "Name": "北海道太平洋沿岸中部",
+              "enName": "CENTRAL PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "62",
+                "Name": "津波注意報",
+                "enName": "Tsunami Advisory"
+              },
+              "Kind": {
+                "Code": "51",
+                "Name": "津波警報",
+                "enName": "Tsunami Warning"
+              }
+            },
+            "FirstHeight": {
+              "Condition": "第１波の到達を確認"
+            },
+            "MaxHeight": {
+              "TsunamiHeight": "3"
+            },
+            "Station": [
+              {
+                "HighTideDateTime": "2025-07-30T18:43:00+09:00",
+                "Name": "浦河",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認",
+                  "Revise": "更新"
+                },
+                "latlon": {
+                  "lat": 42.17,
+                  "lon": 142.77
+                },
+                "Code": "10101",
+                "enName": "URAKAWA"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:31:00+09:00",
+                "Name": "十勝港",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 42.30,
+                  "lon": 143.32
+                },
+                "Code": "10102",
+                "enName": "TOKACHIKO"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:47:00+09:00",
+                "Name": "えりも町庶野",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 42.05,
+                  "lon": 143.30
+                },
+                "Code": "10103",
+                "enName": "ERIMOCHO SHOYA"
+              }
+            ]
+          },
+          {
+            "Area": {
+              "Code": "102",
+              "Name": "北海道太平洋沿岸西部",
+              "enName": "WESTERN PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "71",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              },
+              "Kind": {
+                "Code": "51",
+                "Name": "津波警報",
+                "enName": "Tsunami Warning"
+              }
+            },
+            "FirstHeight": {
+              "Condition": "第１波の到達を確認"
+            },
+            "MaxHeight": {
+              "TsunamiHeight": "3"
+            },
+            "Station": [
+              {
+                "HighTideDateTime": "2025-07-30T18:54:00+09:00",
+                "Name": "函館",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認",
+                  "Revise": "更新"
+                },
+                "latlon": {
+                  "lat": 41.78,
+                  "lon": 140.72
+                },
+                "Code": "10202",
+                "enName": "HAKODATE"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:38:00+09:00",
+                "Name": "苫小牧西港",
+                "FirstHeight": {
+                  "Condition": "津波到達中と推測"
+                },
+                "latlon": {
+                  "lat": 42.63,
+                  "lon": 141.62
+                },
+                "Code": "10203",
+                "enName": "TOMAKOMAI NISHIKO"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T19:38:00+09:00",
+                "Name": "福島町吉岡",
+                "FirstHeight": {
+                  "Condition": "津波到達中と推測"
+                },
+                "latlon": {
+                  "lat": 41.45,
+                  "lon": 140.23
+                },
+                "Code": "10204",
+                "enName": "FUKUSHIMACHO YOSHIOKA"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:39:00+09:00",
+                "Name": "苫小牧東港",
+                "FirstHeight": {
+                  "Condition": "第１波の到達を確認"
+                },
+                "latlon": {
+                  "lat": 42.60,
+                  "lon": 141.82
+                },
+                "Code": "10221",
+                "enName": "TOMAKOMAI HIGASHIKO"
+              },
+              {
+                "HighTideDateTime": "2025-07-30T18:38:00+09:00",
+                "Name": "白老港",
+                "FirstHeight": {
+                  "Condition": "不明"
+                }
+              }
+            ]
+          }
+        ]
+      }
+    }
+  }
+}
