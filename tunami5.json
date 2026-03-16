@@ -1,0 +1,115 @@
+{
+  "Control": {
+    "DateTime": "2025-08-01T09:50:00Z",
+    "EditorialOffice": "気象庁本庁",
+    "Title": "津波警報・注意報・予報a",
+    "Status": "通常",
+    "PublishingOffice": "気象庁"
+  },
+  "Head": {
+    "Serial": null,
+    "InfoKindVersion": "1.0_1",
+    "InfoType": "発表",
+    "InfoKind": "津波警報・注意報・予報",
+    "TargetDateTime": "2025-08-01T18:50:00+09:00",
+    "ValidDateTime": "2025-08-02T19:00:00+09:00",
+    "EventID": "20250730082807",
+    "Title": "津波予報",
+    "Headline": {
+      "Text": "津波予報（若干の海面変動）を発表しました。"
+    },
+    "enTitle": "Tsunami Forecast",
+    "ReportDateTime": "2025-08-01T18:50:00+09:00"
+  },
+  "Body": {
+    "Comments": {
+      "WarningComment": {
+        "Code": "0124 0104 0107",
+        "enText": "[Tsunami Forecast] Slight sea-level changes may be observed in coastal regions, but no tsunami damage is expected.\nPay attention when fishing, swimming or engaging in other marine activities, as there may still be slight sea-level changes.\nNo Major Tsunami Warnings, Tsunami Warnings or Advisories are currently in effect.\n",
+        "Text": "＜津波予報（若干の海面変動）＞\n若干の海面変動が予想されますが、被害の心配はありません。\n\n今後もしばらく海面変動が続くと思われますので、海水浴や磯釣り等を行う際は注意してください。\n\n現在、大津波警報・津波警報・津波注意報を発表している沿岸はありません。"
+      }
+    },
+    "Earthquake": [
+      {
+        "OriginTime": "2025-07-30T08:25:00+09:00",
+        "ArrivalTime": "2025-07-30T08:25:00+09:00",
+        "Hypocenter": {
+          "Area": {
+            "Coordinate": "+52.2+160.0/",
+            "DetailedCode": "1219",
+            "Name": "カムチャツカ半島付近",
+            "DetailedName": "ロシア、カムチャツカ半島東方沖",
+            "Code": "941",
+            "enName": "Adjacent Kamchatka Peninsula"
+          },
+          "Source": "ＰＴＷＣ"
+        },
+        "Magnitude": "8.7"
+      }
+    ],
+    "Text": "［海面変動の見通し］\nこれらの沿岸では津波に伴う海面変動が観測されておりますので、今後１日程度は継続する可能性が高いと考えられます。\n［留意事項］\n津波注意報が発表されていたことや、津波が観測されていることについては、これまでの情報等により十分に認識されていると考えられます。\n８月１日の朝頃から、太平洋を伝播した津波が南米沿岸で反射して日本付近に伝わり、引き続きやや高い津波が観測されている地点があります。\n今後１日程度は海面変動が継続すると考えられます。海に入っての作業や釣り、海水浴などに際しては十分な留意が必要です。",
+    "Tsunami": {
+      "Forecast": {
+        "Item": [
+          {
+            "Area": {
+              "Code": "100",
+              "Name": "北海道太平洋沿岸東部",
+              "enName": "EASTERN PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "72",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              },
+              "Kind": {
+                "Code": "71",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              }
+            }
+          },
+          {
+            "Area": {
+              "Code": "101",
+              "Name": "北海道太平洋沿岸中部",
+              "enName": "CENTRAL PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "72",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              },
+              "Kind": {
+                "Code": "71",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              }
+            }
+          },
+          {
+            "Area": {
+              "Code": "102",
+              "Name": "北海道太平洋沿岸西部",
+              "enName": "WESTERN PART OF PACIFIC COAST OF HOKKAIDO"
+            },
+            "Category": {
+              "LastKind": {
+                "Code": "72",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              },
+              "Kind": {
+                "Code": "71",
+                "Name": "津波予報（若干の海面変動）",
+                "enName": "Tsunami Forecast"
+              }
+            }
+          }
+        ]
+      }
+    }
+  }
+}
