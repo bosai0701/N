@@ -218,7 +218,7 @@ const TILE_SIZE = 256;
 
 /* タイル取得の同時実行数 */
 const CONCURRENCY = 8;
-const MOSAIC_CHUNK_TILES = 4;
+const MOSAIC_CHUNK_TILES = 8;
 
 /* 1枚あたりのタイム制限 (ms) */
 const TILE_TIMEOUT = 8000;
@@ -576,7 +576,12 @@ async function buildChunkedMosaic(options) {
   };
 
   try {
-    await Promise.all(Array.from({ length: CONCURRENCY }, worker));
+    const results = await Promise.allSettled(Array.from({ length: CONCURRENCY }, worker));
+    const failedWorker = results.find(result => result.status === 'rejected');
+    if (failedWorker) throw failedWorker.reason;
+    for (const chunk of chunks) {
+      if (chunk.canvas) await finishChunk(chunk);
+    }
   } catch (error) {
     chunks.forEach(chunk => {
       releaseChunkCanvas(chunk);
@@ -612,6 +617,7 @@ function removeMosaicLayers(items) {
 function swapMosaicLayers(key, mosaics, layerOptions, beforeId) {
   const generation = ++canvasSeq;
   const added = [];
+  const previous = key === 'nowcast' ? activeNowcastMosaic.slice() : [];
 
   try {
     mosaics.forEach((mosaic, index) => {
@@ -631,7 +637,7 @@ function swapMosaicLayers(key, mosaics, layerOptions, beforeId) {
         minzoom: layerOptions.minzoom,
         maxzoom: layerOptions.maxzoom,
         paint: {
-          'raster-opacity': layerOptions.opacity,
+          'raster-opacity': 0,
           'raster-resampling': layerOptions.resampling,
           'raster-fade-duration': 0
         }
@@ -645,11 +651,42 @@ function swapMosaicLayers(key, mosaics, layerOptions, beforeId) {
     throw error;
   }
 
-  const previous = key === 'nowcast' ? activeNowcastMosaic : [];
-  if (key === 'nowcast') activeNowcastMosaic = added;
+  if (key === 'nowcast') activeNowcastMosaic = previous;
   map.triggerRepaint();
-  if (previous.length) map.once('render', () => removeMosaicLayers(previous));
+
+  const startedAt = Date.now();
+  const finishSwap = () => {
+    if (!added.every(item => map.getLayer(item.layerId) &&
+        map.getSource(item.sourceId) && map.isSourceLoaded(item.sourceId))) {
+      if (Date.now() - startedAt < 20000) {
+        setTimeout(finishSwap, 250);
+        return;
+      }
+
+      removeMosaicLayers(added);
+      mosaics.forEach(mosaic => {
+        if (!added.some(item => item.url === mosaic.url)) URL.revokeObjectURL(mosaic.url);
+      });
+      if (key === 'nowcast') activeNowcastMosaic = previous;
+      setConnectionStatus('unstable');
+      return;
+    }
+
+    for (const item of added) {
+      map.setPaintProperty(item.layerId, 'raster-opacity', layerOptions.opacity);
+    }
+    for (const item of previous) {
+      if (map.getLayer(item.layerId)) map.setPaintProperty(item.layerId, 'raster-opacity', 0);
+    }
+
+    if (key === 'nowcast') activeNowcastMosaic = added;
+    map.triggerRepaint();
+    if (previous.length) map.once('render', () => removeMosaicLayers(previous));
+  };
+
+  setTimeout(finishSwap, 0);
 }
+
 /* =========================================
    キャンバスレイヤーの差し替え
    新しいレイヤーを先に作り、描画後に古い方を消す (ちらつき防止)
