@@ -1,235 +1,290 @@
 <!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8" />
-  <title>RS Monitor</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <link href="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.css" rel="stylesheet" />
-  <script src="https://unpkg.com/maplibre-gl@3.6.1/dist/maplibre-gl.js"></script>
-
-  <style>
-    html, body { margin:0; padding:0; height:100%; }
-    #map { width:100%; height:100dvh; }
-
-    .info {
-      position:absolute; top:15px; right:15px; z-index:10;
-      padding:6px 8px; background:rgba(255,255,255,0.8);
-      box-shadow:0 0 15px rgba(0,0,0,0.2);
-      border-radius:5px; font-size:14px;
-    }
-
-    .epicenter-marker {
-      position: relative;
-      width: 20px;
-      height: 20px;
-    }
-    .epicenter-marker::before,
-    .epicenter-marker::after {
-      content: '';
-      position: absolute;
-      top: 50%; left: 50%;
-      width: 2px; height: 20px; background: red;
-    }
-    .epicenter-marker::before { transform:translate(-50%,-50%) rotate(45deg); }
-    .epicenter-marker::after  { transform:translate(-50%,-50%) rotate(-45deg); }
-  </style>
-</head>
-<body>
-
-<div id="map"></div>
-<div class="info"><b>観測点数:</b> 0</div>
-
-<script>
-  const map = new maplibregl.Map({
-    container: 'map',
-    style: {
-      version: 8,
-      sources: {
-        google: {
-          type: "raster",
-          tiles: ["https://mt1.google.com/vt/lyrs=s&x={x}&y={y}&z={z}"],
-          tileSize: 256
-        }
-      },
-      layers: [{ id:"google", type:"raster", source:"google" }]
-    },
-    center:[134.5,34.5], zoom:3, maxZoom:9, minZoom:3,
-    attributionControl:false
-  });
-
-  const infoBox = document.querySelector(".info");
-  const colorMap = {
-    d:'#0000CD', e:'#0024E3', f:'#000ED6', g:'#0048FA',
-    h:'#008CC2', i:'#00D08B', j:'#1FE460', k:'#7DFC21',
-    l:'#BDFF0C', m:'#DEFF05', n:'#FFFF00', o:'#FFEE00',
-    p:'#FFDD00', q:'#FFB600', r:'#FF9000', s:'#FF6A00',
-    t:'#FF4400', u:'#FA2100', v:'#F50000', w:'#D00000',
-    x:'#AA0000'
-  };
-
-  let geojson = { type:"FeatureCollection", features:[] };
-  let siteCoords = [];
-  let markersCount = 0;
-  let lastGoodData = null;
-  let epicenterMarker = null;
-
-  map.on("load", () => {
-    map.addSource("points", { type:"geojson", data:geojson });
-    map.addLayer({
-      id:"points-layer",
-      type:"circle",
-      source:"points",
-      paint:{
-        "circle-radius":2,
-        "circle-color":["get","color"],
-        "circle-stroke-color":"#ffffff",
-        "circle-stroke-width":0.2,
-        "circle-opacity":1
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>台風情報マップ</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+    <style>
+      :root {
+        --bg: #08161f;
+        --panel: rgba(12, 24, 35, 0.82);
+        --text: #edf6ff;
+        --muted: #a5bfd6;
+        --line: rgba(255,255,255,0.12);
       }
-    });
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0;
+        height: 100%;
+        background: linear-gradient(180deg, #07141d, #0d1d2d);
+        color: var(--text);
+        font-family: sans-serif;
+      }
+      body {
+        display: flex;
+        flex-direction: column;
+      }
+      .topbar {
+        padding: 14px 18px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid var(--line);
+        background: rgba(9,18,28,0.9);
+      }
+      .title {
+        font-size: 1.2rem;
+        font-weight: 700;
+      }
+      select {
+        padding: 10px 14px;
+        font-size: 1rem;
+        border-radius: 10px;
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--text);
+      }
+      #map {
+        flex: 1;
+        min-height: 520px;
+        width: 100%;
+      }
+      .legend {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        padding: 10px 18px 0;
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .legend-item {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 4px;
+        border: 1px solid rgba(255,255,255,0.45);
+      }
+      .leaflet-container { background: #0d1d2d; }
+      .fct-label {
+        background: rgba(20, 30, 42, 0.28);
+        color: rgba(255,255,255,0.9);
+        border: 1px solid rgba(255,255,255,0.18);
+        border-radius: 999px;
+        padding: 4px 10px;
+        font-size: 12px;
+        font-weight: 600;
+        white-space: nowrap;
+        backdrop-filter: blur(2px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="topbar">
+      <div class="title">台風情報マップ</div>
+    </div>
 
-    map.addSource("pWaveSource",{ type:"geojson", data:{ type:"FeatureCollection", features:[] } });
-    map.addSource("sWaveSource",{ type:"geojson", data:{ type:"FeatureCollection", features:[] } });
-    map.addLayer({ id:"pWaveLayer", type:"line", source:"pWaveSource", paint:{ "line-color":"blue", "line-width":1 } });
-    map.addLayer({ id:"sWaveLayer", type:"line", source:"sWaveSource", paint:{ "line-color":"red", "line-width":1 } });
-  });
+    <div class="legend">
+      <span class="legend-item"><span class="swatch" style="background: rgba(255,255,255,0.18);"></span>予報円</span>
+      <span class="legend-item"><span class="swatch" style="background: rgba(248,231,107,0.7);"></span>強風域</span>
+      <span class="legend-item"><span class="swatch" style="background: rgba(255,75,75,0.7);"></span>暴風域 / 暴風警戒域</span>
+      <span class="legend-item"><span class="swatch" style="background: rgba(248, 196, 15, 0.9);"></span>実際に通った経路</span>
+      <span class="legend-item"><span class="swatch" style="background: rgba(30, 166, 255, 0.9);"></span>予想経路</span>
+      <span class="legend-item"><span class="swatch" style="background: rgba(255,255,255,0.95);"></span>中心位置</span>
+    </div>
 
-  fetch('https://weather-kyoshin.west.edge.storage-yahoo.jp/SiteList/sitelist.json')
-    .then(r=>r.json())
-    .then(async data=>{
-      siteCoords = data.items;
-      await forceInitialMarkers();
-      updateMarkers();
-    });
+    <div id="map"></div>
 
-  function getRealTimeUrl(secondsAgo=5){
-    let now=new Date();
-    now.setSeconds(now.getSeconds()-secondsAgo);
-    const YYYY=now.getFullYear();
-    const MM=String(now.getMonth()+1).padStart(2,'0');
-    const DD=String(now.getDate()).padStart(2,'0');
-    const HH=String(now.getHours()).padStart(2,'0');
-    const mm=String(now.getMinutes()).padStart(2,'0');
-    const SS=String(now.getSeconds()).padStart(2,'0');
-    return `https://weather-kyoshin.west.edge.storage-yahoo.jp/RealTimeData/${YYYY}${MM}${DD}/${YYYY}${MM}${DD}${HH}${mm}${SS}.json`;
-  }
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+    <script>
+      const map = L.map('map').setView([35, 138], 4);
+      L.tileLayer('https://cyberjapandata.gsi.go.jp/xyz/pale/{z}/{x}/{y}.png', {
+        attribution: '<a href="https://maps.gsi.go.jp/development/ichiran.html" target="_blank">地理院タイル</a>',
+        maxZoom: 18,
+        minZoom: 3
+      }).addTo(map);
 
-  async function forceInitialMarkers() {
-    for (let t=5; t<=60; t+=5) {
-      try {
-        const r = await fetch(getRealTimeUrl(t));
-        if (!r.ok) continue;
-        const data = await r.json();
-        applyData(data);
-        lastGoodData = data;
-        return;
-      } catch(e){}
-    }
-    if (lastGoodData) applyData(lastGoodData);
-  }
+      const layerGroup = L.layerGroup().addTo(map);
+      const actualPathGroup = L.layerGroup().addTo(map);
+      const forecastPathGroup = L.layerGroup().addTo(map);
 
-  function applyData(data){
-    const intensities = data.realTimeData.intensity;
-    const N = Math.min(intensities.length, siteCoords.length);
+      function formatLabel(dateStr) {
+        const d = new Date(dateStr);
+        const days = ['日', '月', '火', '水', '木', '金', '土'];
+        return `${d.getDate()}日(${days[d.getDay()]}) ${String(d.getHours()).padStart(2, '0')}時`;
+      }
 
-    geojson.features = [];
-    markersCount = 0;
+      function centerMarker(pos, text) {
+        const p1 = L.polyline([[pos[0] - 0.35, pos[1]], [pos[0] + 0.35, pos[1]]], { color: 'rgba(255,255,255,0.7)', weight: 3, opacity: 0.7 });
+        const p2 = L.polyline([[pos[0], pos[1] - 0.45], [pos[0], pos[1] + 0.45]], { color: 'rgba(255,255,255,0.7)', weight: 3, opacity: 0.7 });
+        layerGroup.addLayer(p1);
+        layerGroup.addLayer(p2);
 
-    for(let i=0; i<N; i++){
-      let code = intensities.charAt(i);
-      if(code === 'c') continue;
-
-      markersCount++;
-      geojson.features.push({
-        type:"Feature",
-        geometry:{ type:"Point", coordinates:[siteCoords[i][1], siteCoords[i][0]] },
-        properties:{ color:colorMap[code]||"#AA0000" }
-      });
-    }
-
-    map.getSource("points").setData(geojson);
-    infoBox.innerHTML="<b>観測点数:</b> "+markersCount;
-  }
-
-  let loading=false;
-  function updateMarkers(){
-    if(loading || siteCoords.length===0) return;
-    loading=true;
-
-    fetch(getRealTimeUrl())
-      .then(r=>{ if(!r.ok) throw new Error("no"); return r.json(); })
-      .then(data=>{
-        lastGoodData = data;
-        applyData(data);
-      })
-      .catch(()=>{})
-      .finally(()=>{ loading=false; });
-  }
-
-  setInterval(updateMarkers,100);
-
-  function createCircleGeoJSON(center, radius, steps=32){
-    const coords=[];
-    const [lng,lat]=center;
-    const latRad=lat*Math.PI/180;
-
-    for(let i=0;i<=steps;i++){
-      const angle=(i/steps)*2*Math.PI;
-      const dx=(radius/111000)/Math.cos(latRad)*Math.cos(angle);
-      const dy=(radius/111000)*Math.sin(angle);
-      coords.push([lng+dx, lat+dy]);
-    }
-    return { type:"Feature", geometry:{ type:"Polygon", coordinates:[coords] } };
-  }
-
-  function updatePsWaveLayer(){
-    fetch(getRealTimeUrl())
-      .then(r=>r.json())
-      .then(data=>{
-        const w=data.psWave?.items;
-        if(w && w.length>0){
-          const lat=parseFloat(w[0].latitude.replace("N",""));
-          const lng=parseFloat(w[0].longitude.replace("E",""));
-          const center=[lng,lat];
-
-          const distP = w[0].pRadius*1000;
-          const distS = w[0].sRadius*1000;
-          const timeP = w[0].pTime;
-          const timeS = w[0].sTime;
-          const originTime = w[0].originTime || (Date.now()/1000);
-
-          const now = Date.now()/1000;
-          const elapsed = Math.max(now-originTime, 0.001);
-
-          const speedP = distP/Math.max(timeP,1);
-          const speedS = distS/Math.max(timeS,1);
-
-          const radiusP = speedP * elapsed;
-          const radiusS = speedS * elapsed;
-
-          map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[ createCircleGeoJSON(center,radiusP) ] });
-          map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[ createCircleGeoJSON(center,radiusS) ] });
-
-          if(!epicenterMarker){
-            const el=document.createElement('div');
-            el.className='epicenter-marker';
-            epicenterMarker=new maplibregl.Marker({element:el}).setLngLat(center).addTo(map);
-          } else {
-            epicenterMarker.setLngLat(center);
-          }
-        } else {
-          map.getSource("pWaveSource").setData({ type:"FeatureCollection", features:[] });
-          map.getSource("sWaveSource").setData({ type:"FeatureCollection", features:[] });
-          if(epicenterMarker){ epicenterMarker.remove(); epicenterMarker=null; }
+        if (text) {
+          const m = L.marker(pos, {
+            icon: L.divIcon({ className: 'fct-label', html: `<span>${text}</span>`, iconSize: [100, 24], iconAnchor: [50, 12] })
+          });
+          layerGroup.addLayer(m);
         }
-      })
-      .catch(()=>{});
-  }
+      }
 
-  updatePsWaveLayer();
-  setInterval(updatePsWaveLayer,10);
-</script>
+      function polarToLatLng(center, radiusMeters, ang) {
+        const lat = center[0] + (radiusMeters / 111000) * Math.sin((ang - 90) * Math.PI / 180);
+        const lng = center[1] + (radiusMeters / (111000 * Math.cos(center[0] * Math.PI / 180))) * Math.cos((ang - 90) * Math.PI / 180);
+        return [lat, lng];
+      }
 
-</body>
+      function makeArc(center, radius, start, end) {
+        const pts = [];
+        for (let a = start; a <= end; a += 1) {
+          pts.push(polarToLatLng(center, radius, a));
+        }
+        return L.polygon(pts, {
+          color: '#ff4b4b',
+          fillColor: '#ff4b4b',
+          fillOpacity: 0.25,
+          opacity: 1,
+          weight: 1.5
+        });
+      }
+
+      function drawTyphoon(forecast) {
+        const actualPoints = [];
+        const forecastPoints = [];
+        const allBounds = [];
+
+        for (const item of forecast) {
+          const track = item.track || {};
+          if (Array.isArray(track.preTyphoon)) {
+            actualPoints.push(...track.preTyphoon);
+            allBounds.push(...track.preTyphoon);
+          }
+          if (Array.isArray(track.typhoon)) {
+            actualPoints.push(...track.typhoon);
+            allBounds.push(...track.typhoon);
+          }
+
+          if (Array.isArray(item.center)) {
+            forecastPoints.push(item.center);
+            allBounds.push(item.center);
+          }
+
+          const advancedHours = Number(item.advancedHours || 0);
+
+          if (item.galeWarningArea && advancedHours === 0) {
+            layerGroup.addLayer(L.circle(item.galeWarningArea.center, {
+              radius: Number(item.galeWarningArea.radius) || 0,
+              color: '#f8e76b',
+              weight: 2,
+              opacity: 1,
+              fillColor: '#f8e76b',
+              fillOpacity: 0.42
+            }));
+          }
+
+          if (item.stormWarningArea && advancedHours === 0) {
+            for (const arc of item.stormWarningArea.arc || []) {
+              const center = arc[0];
+              const radius = Number(arc[1]) || 0;
+              const start = Number(arc[2][0]) || 0;
+              const end = Number(arc[2][1]) || 360;
+              layerGroup.addLayer(makeArc(center, radius, start, end));
+            }
+          }
+
+          if (item.center && advancedHours === 0) {
+            centerMarker(item.center, '実況');
+          }
+
+          if (item.probabilityCircle) {
+            const pc = item.probabilityCircle;
+            layerGroup.addLayer(L.circle(item.center, {
+              radius: Number(pc.radius) || 0,
+              color: '#ffffff',
+              weight: 1.5,
+              opacity: 0.7,
+              fillOpacity: 0,
+              dashArray: '6 8'
+            }));
+
+            for (const tangent of pc.tangent || []) {
+              if (Array.isArray(tangent) && tangent.length === 2) {
+                layerGroup.addLayer(L.polyline(tangent, { color: '#ffffff', weight: 1.5, opacity: 0.7 }));
+              }
+            }
+
+            if (item.validtime && item.validtime.JST) {
+              const marker = L.marker([item.center[0] - 0.5, item.center[1]], {
+                icon: L.divIcon({ className: 'fct-label', html: `<span>${formatLabel(item.validtime.JST)}</span>`, iconSize: [120, 24], iconAnchor: [60, 12] })
+              });
+              layerGroup.addLayer(marker);
+            }
+          }
+        }
+
+        if (actualPoints.length >= 2) {
+          actualPathGroup.addLayer(L.polyline(actualPoints, { color: '#f1c40f', weight: 4, opacity: 0.9 }));
+        }
+
+        if (forecastPoints.length >= 2) {
+          forecastPathGroup.addLayer(L.polyline(forecastPoints, { color: '#1ea6ff', weight: 3, opacity: 0.9, dashArray: '8 8' }));
+        }
+
+        const last = forecast[forecast.length - 1];
+        if (last && last.stormWarningArea) {
+          for (const arc of last.stormWarningArea.arc || []) {
+            const center = arc[0];
+            const radius = Number(arc[1]) || 0;
+            const start = Number(arc[2][0]) || 0;
+            const end = Number(arc[2][1]) || 360;
+            layerGroup.addLayer(makeArc(center, radius, start, end));
+          }
+          for (const line of last.stormWarningArea.line || []) {
+            if (Array.isArray(line) && line.length >= 2) {
+              layerGroup.addLayer(L.polyline(line, { color: '#ff4b4b', weight: 2, opacity: 1 }));
+            }
+          }
+        }
+
+        return allBounds;
+      }
+
+      function loadAllTyphoons() {
+        layerGroup.clearLayers();
+        actualPathGroup.clearLayers();
+        forecastPathGroup.clearLayers();
+
+        fetch('https://www.jma.go.jp/bosai/typhoon/data/targetTc.json')
+          .then(r => r.json())
+          .then((items) => {
+            return Promise.all(items.map(item =>
+              fetch(`https://www.jma.go.jp/bosai/typhoon/data/${item.tropicalCyclone}/forecast.json`)
+                .then(res => res.json())
+                .then(forecast => ({ item, forecast }))
+            ));
+          })
+          .then((all) => {
+            const bounds = [];
+            all.forEach(({ forecast }) => {
+              const result = drawTyphoon(forecast);
+              if (Array.isArray(result)) {
+                bounds.push(...result);
+              }
+            });
+            if (bounds.length) {
+              map.fitBounds(bounds, { padding: [20, 20] });
+            }
+          })
+          .catch((err) => {
+            console.error('台風データ取得に失敗しました', err);
+          });
+      }
+
+      loadAllTyphoons();
+    </script>
+  </body>
 </html>
